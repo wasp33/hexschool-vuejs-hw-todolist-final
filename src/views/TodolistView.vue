@@ -20,37 +20,69 @@
         </div>
         <div class="todoList_list">
           <ul class="todoList_tab">
-            <li>
-              <a
-                href="#"
-                @click.prevent="setActiveTab('all')"
-                :class="{ active: activeTab === 'all' }"
-                >全部</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                @click.prevent="setActiveTab('pending')"
-                :class="{ active: activeTab === 'pending' }"
-                >待完成</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                @click.prevent="setActiveTab('completed')"
-                :class="{ active: activeTab === 'completed' }"
-                >已完成</a
-              >
-            </li>
+            <li><a href="#" class="active">全部</a></li>
+            <li><a href="#">待完成</a></li>
+            <li><a href="#">已完成</a></li>
           </ul>
           <div class="todoList_items">
-            <ul class="todoList_item" v-for="todoitem in filteredTodos" :key="todoitem.id">
-              <TodoItem :id="todoitem.id" :name="todoitem.name" :completed="todoitem.completed" />
+            <ul class="todoList_item">
+              <li>
+                <label class="todoList_label">
+                  <input class="todoList_input" type="checkbox" value="true" />
+                  <span>把冰箱發霉的檸檬拿去丟</span>
+                </label>
+                <a href="#">
+                  <i class="fa fa-times"></i>
+                </a>
+              </li>
+              <li>
+                <label class="todoList_label">
+                  <input class="todoList_input" type="checkbox" value="true" />
+                  <span>打電話叫媽媽匯款給我</span>
+                </label>
+                <a href="#">
+                  <i class="fa fa-times"></i>
+                </a>
+              </li>
+              <li>
+                <label class="todoList_label">
+                  <input class="todoList_input" type="checkbox" value="true" />
+                  <span>整理電腦資料夾</span>
+                </label>
+                <a href="#">
+                  <i class="fa fa-times"></i>
+                </a>
+              </li>
+              <li>
+                <label class="todoList_label">
+                  <input class="todoList_input" type="checkbox" value="true" />
+                  <span>繳電費水費瓦斯費</span>
+                </label>
+                <a href="#">
+                  <i class="fa fa-times"></i>
+                </a>
+              </li>
+              <li>
+                <label class="todoList_label">
+                  <input class="todoList_input" type="checkbox" value="true" />
+                  <span>約vicky禮拜三泡溫泉</span>
+                </label>
+                <a href="#">
+                  <i class="fa fa-times"></i>
+                </a>
+              </li>
+              <li>
+                <label class="todoList_label">
+                  <input class="todoList_input" type="checkbox" value="true" />
+                  <span>約ada禮拜四吃晚餐</span>
+                </label>
+                <a href="#">
+                  <i class="fa fa-times"></i>
+                </a>
+              </li>
             </ul>
             <div class="todoList_statistics">
-              <p>{{ completedCount }} 個已完成項目</p>
+              <p>5 個已完成項目</p>
             </div>
           </div>
         </div>
@@ -58,70 +90,7 @@
     </div>
   </div>
 </template>
-<script setup>
-import { ref, computed, onMounted } from 'vue'
-import TodoItem from '@/components/TodoItem.vue'
-
-// Add reactive state for active tab
-const activeTab = ref('all') // 'all', 'pending', or 'completed'
-
-// Set active tab function
-function setActiveTab(tab) {
-  activeTab.value = tab
-}
-
-const todolist = ref([
-  {
-    id: 1,
-    name: '把冰箱發霉的檸檬拿去丟',
-    completed: 'true',
-  },
-  {
-    id: 2,
-    name: '打電話叫媽媽匯款給我',
-    completed: 'false',
-  },
-  {
-    id: 3,
-    name: '整理電腦資料夾',
-    completed: 'false',
-  },
-  {
-    id: 4,
-    name: '繳電費水費瓦斯費',
-    completed: 'false',
-  },
-  {
-    id: 5,
-    name: '約vicky禮拜三泡溫泉',
-    completed: 'false',
-  },
-  {
-    id: 6,
-    name: '約ada禮拜四吃晚餐',
-    completed: 'false',
-  },
-])
-
-// Filter todos based on active tab
-const filteredTodos = computed(() => {
-  if (activeTab.value === 'all') return todolist.value
-  if (activeTab.value === 'pending')
-    return todolist.value.filter((todo) => todo.completed === 'false')
-  if (activeTab.value === 'completed')
-    return todolist.value.filter((todo) => todo.completed === 'true')
-  return todolist.value
-})
-
-// Count completed items
-const completedCount = computed(() => {
-  return todolist.value.filter((todo) => todo.completed === 'true').length
-})
-
-onMounted(() => {
-  console.log('Component mounted!')
-})
-</script>
+<script setup></script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap');
 html,
@@ -315,26 +284,6 @@ img {
   }
 }
 
-.side {
-  width: 386px;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-@media (max-width: 576px) {
-  .side {
-    width: 100%;
-  }
-}
-
 nav {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -396,6 +345,12 @@ nav ul a span {
 
 @media (max-width: 576px) {
   nav ul .todo_sm {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .d-m-n {
     display: none;
   }
 }
