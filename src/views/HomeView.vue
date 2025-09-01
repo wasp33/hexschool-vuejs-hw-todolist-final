@@ -588,6 +588,4 @@ nav ul a span {
   font-size: 0.875rem;
   text-decoration: none;
 }
-
-/*# sourceMappingURL=all.css.map */
 </style>
