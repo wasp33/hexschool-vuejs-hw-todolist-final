@@ -38,7 +38,7 @@
                 @emitFinishFromList="finishFromList" @emitRemoveItem="removeItem" />
             </ul>
             <div class="todoList_statistics">
-              <p>{{ completedCount }} 個已完成項目</p>
+              <p>{{ todolist.length - completedCount }} 個待完成項目</p>
             </div>
           </div>
         </div>
