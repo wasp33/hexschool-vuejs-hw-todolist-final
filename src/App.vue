@@ -5,7 +5,7 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
   <div container>
     <h1>ToDo List</h1>
-    <p><strong>Current route path:</strong> {{ $route.fullPath }}</p>
+    <!-- <p><strong>Current route path:</strong> {{ $route.fullPath }}</p> -->
     <nav>
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/login">Login</RouterLink>
