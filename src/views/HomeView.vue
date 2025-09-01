@@ -13,46 +13,38 @@
     <div class="conatiner todoListPage vhContainer">
       <div class="todoList_Content">
         <div class="inputBox">
-          <input type="text" placeholder="請輸入待辦事項" />
-          <a href="#">
-            <i class="fa fa-plus"></i>
+          <input type="text" v-model="newTodo" placeholder="請輸入待辦事項" />
+          <a href="#" v-on:click="addTodo">
+            <i class="fa fa-plus">+</i>
           </a>
         </div>
-        <div class="todoList_list">
+        <p>current input: {{ newTodo }}</p>
+        <div class="todoList_list" v-if="todolist.length > 0">
           <ul class="todoList_tab">
             <li>
-              <a
-                href="#"
-                @click.prevent="setActiveTab('all')"
-                :class="{ active: activeTab === 'all' }"
-                >全部</a
-              >
+              <a href="#" @click.prevent="setActiveTab('all')" :class="{ active: activeTab === 'all' }">全部</a>
             </li>
             <li>
-              <a
-                href="#"
-                @click.prevent="setActiveTab('pending')"
-                :class="{ active: activeTab === 'pending' }"
-                >待完成</a
-              >
+              <a href="#" @click.prevent="setActiveTab('pending')" :class="{ active: activeTab === 'pending' }">待完成</a>
             </li>
             <li>
-              <a
-                href="#"
-                @click.prevent="setActiveTab('completed')"
-                :class="{ active: activeTab === 'completed' }"
-                >已完成</a
-              >
+              <a href="#" @click.prevent="setActiveTab('completed')"
+                :class="{ active: activeTab === 'completed' }">已完成</a>
             </li>
           </ul>
           <div class="todoList_items">
             <ul class="todoList_item" v-for="todoitem in filteredTodos" :key="todoitem.id">
-              <TodoItem :id="todoitem.id" :name="todoitem.name" :completed="todoitem.completed" />
+              <TodoItem :id="todoitem.id" :name="todoitem.name" :completed="todoitem.completed"
+                @emitFinishFromList="finishFromList" @emitRemoveItem="removeItem" />
             </ul>
             <div class="todoList_statistics">
               <p>{{ completedCount }} 個已完成項目</p>
             </div>
           </div>
+        </div>
+        <div v-else>
+          <p>目前尚無待辦事項</p>
+          <img src="@/assets/nolist.svg" alt="">
         </div>
       </div>
     </div>
@@ -64,42 +56,61 @@ import TodoItem from '@/components/TodoItem.vue'
 
 // Add reactive state for active tab
 const activeTab = ref('all') // 'all', 'pending', or 'completed'
-
+const newTodo = ref('')
 // Set active tab function
 function setActiveTab(tab) {
   activeTab.value = tab
+}
+
+const addTodo = () => {
+  alert(`Add todo: ${newTodo.value}`)
+  // console.log("Add todo: ", newTodo.value)
+  todolist.value.push({
+    id: todolist.value.length + 1,
+    name: newTodo.value,
+    completed: false,
+  })
+  newTodo.value = ''
+}
+
+const finishFromList = (todoItem) => {
+  const removeItem = todolist.value.find((todo) => todo.id === todoItem.id)
+  if (removeItem) removeItem.completed = !todoItem.completed
+}
+const removeItem = (id) => {
+  todolist.value = todolist.value.filter(todo => todo.id !== id);
 }
 
 const todolist = ref([
   {
     id: 1,
     name: '把冰箱發霉的檸檬拿去丟',
-    completed: 'true',
+    completed: true,
   },
   {
     id: 2,
     name: '打電話叫媽媽匯款給我',
-    completed: 'false',
+    completed: false,
   },
   {
     id: 3,
     name: '整理電腦資料夾',
-    completed: 'false',
+    completed: false,
   },
   {
     id: 4,
     name: '繳電費水費瓦斯費',
-    completed: 'false',
+    completed: false,
   },
   {
     id: 5,
     name: '約vicky禮拜三泡溫泉',
-    completed: 'false',
+    completed: false,
   },
   {
     id: 6,
     name: '約ada禮拜四吃晚餐',
-    completed: 'false',
+    completed: false,
   },
 ])
 
@@ -107,15 +118,15 @@ const todolist = ref([
 const filteredTodos = computed(() => {
   if (activeTab.value === 'all') return todolist.value
   if (activeTab.value === 'pending')
-    return todolist.value.filter((todo) => todo.completed === 'false')
+    return todolist.value.filter((todo) => todo.completed === false)
   if (activeTab.value === 'completed')
-    return todolist.value.filter((todo) => todo.completed === 'true')
+    return todolist.value.filter((todo) => todo.completed === true)
   return todolist.value
 })
 
 // Count completed items
 const completedCount = computed(() => {
-  return todolist.value.filter((todo) => todo.completed === 'true').length
+  return todolist.value.filter((todo) => todo.completed === true).length
 })
 
 onMounted(() => {
@@ -124,6 +135,7 @@ onMounted(() => {
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap');
+
 html,
 body,
 div,
@@ -528,7 +540,7 @@ nav ul a span {
   margin-right: 16px;
 }
 
-.todoList_list .todoList_items .todoList_input:checked ~ span {
+.todoList_list .todoList_items .todoList_input:checked~span {
   color: #9f9a91;
   text-decoration: line-through;
   -webkit-transition: all 0.4s ease-in-out;
@@ -576,5 +588,6 @@ nav ul a span {
   font-size: 0.875rem;
   text-decoration: none;
 }
+
 /*# sourceMappingURL=all.css.map */
 </style>
